@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-k8s-app
+spec:
+  replicas: 2 # 컨테이너를 2개 띄워서 안정성 확보
+  selector:
+    matchLabels:
+      app: my-k8s-app
+  template:
+    metadata:
+      labels:
+        app: my-k8s-app
+    spec:
+      containers:
+        - name: my-k8s-app
+          image: myungjoojang/my-k8s-app:latest
+          ports:
+            - containerPort: 80
