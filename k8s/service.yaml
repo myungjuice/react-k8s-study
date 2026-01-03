@@ -1,12 +1,17 @@
 apiVersion: v1
-kind: Service
+kind: Service # 리소스 종류: 'Service' (파드들 앞단에 있는 안내 데스크/네트워크 연결 담당)
 metadata:
-  name: my-k8s-app-service
+  name: my-k8s-app-service # 서비스의 이름 (클러스터 내부에서는 이 이름으로 서로 통신 가능)
 spec:
+  # [연결 대상 찾기]
   selector:
-    app: my-k8s-app
+    app: my-k8s-app # 이 라벨을 가진 파드들만 골라서 트래픽을 전달함 (Deployment의 라벨과 똑같아야 함!)
+
+  # [포트 연결 설정]
   ports:
     - protocol: TCP
-      port: 80 # 들어오는 포트
-      targetPort: 80 # 나가는 포트 (컨테이너 내부)
-  type: LoadBalancer
+      port: 80 # [서비스의 문] 브라우저(외부)가 접속할 때 두드리는 포트 번호
+      targetPort: 80 # [컨테이너의 문] 실제 파드 내부(Nginx)가 열고 기다리는 포트 번호 (보통 port와 같게 설정)
+
+  # [외부 노출 방식]
+  type: LoadBalancer # 외부에서 접속할 수 있도록 IP를 부여받는 방식 (k3s에서는 호스트 IP의 80번 포트를 낚아챔)

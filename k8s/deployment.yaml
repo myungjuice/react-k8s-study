@@ -1,19 +1,23 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1 # 쿠버네티스 API 버전 (버전에 따라 쓸 수 있는 기능이 다름)
+kind: Deployment # 리소스의 종류: 'Deployment' (앱 배포 및 관리를 담당하는 관리자)
 metadata:
-  name: my-k8s-app
+  name: my-k8s-app # 이 배포 관리자(Deployment) 자체의 이름
 spec:
-  replicas: 2 # 컨테이너를 2개 띄워서 안정성 확보
-  selector:
+  replicas: 2 # 복제본 개수: "항상 2개의 파드(Pod)가 실행되도록 유지해라" (1개 죽으면 다시 살림)
+
+  # [연결 고리 설정]
+  selector: # Deployment가 관리할 파드를 찾는 방법 (이 라벨을 가진 놈은 내 부하다!)
     matchLabels:
-      app: my-k8s-app
+      app: my-k8s-app # 'app: my-k8s-app'이라는 라벨이 붙은 파드를 찾아서 관리함
+
+  # [파드 설계도] - 붕어빵 틀처럼 실제로 찍어낼 파드의 모양을 정의
   template:
     metadata:
       labels:
-        app: my-k8s-app
+        app: my-k8s-app # 생성될 파드에 붙일 이름표 (위의 selector와 글자가 똑같아야 관리됨)
     spec:
-      containers:
-        - name: my-k8s-app
-          image: myungjoojang/my-k8s-app:latest
+      containers: # 파드 안에 들어갈 컨테이너 설정 (보통 1파드 1컨테이너)
+        - name: my-k8s-app # 컨테이너의 이름 (로그 볼 때 식별용)
+          image: myungjoojang/my-k8s-app:latest # 도커 허브에서 가져올 이미지 주소
           ports:
-            - containerPort: 80
+            - containerPort: 80 # 컨테이너 내부에서 열어둘 포트 (Nginx가 80 쓰니까)
