@@ -9,5 +9,4 @@ spec:
     - protocol: TCP
       port: 80 # 들어오는 포트
       targetPort: 80 # 나가는 포트 (컨테이너 내부)
-      nodePort: 30007 # 외부에서 접속할 고정 포트 (30000~32767 사이 아무거나 입력 가능)
-  type: NodePort # 외부 접속을 위해 NodePort 방식 사용
+  type: LoadBalancer
